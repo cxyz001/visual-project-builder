@@ -2,9 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, Check, TrendingUp, Package, Truck, AlertTriangle, Gauge } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
 import warehouse from "@/assets/warehouse.jpg";
-import sceneClean from "@/assets/warehouse-clean.png";
-import haulerA from "@/assets/sprite-truck-a.png";
-import haulerB from "@/assets/sprite-truck-b.png";
+import yardClean from "@/assets/warehouse-clean2.png";
+import haulerA from "@/assets/truck-a-clean.png";
+import haulerB from "@/assets/truck-b-clean.png";
 import agvSprite from "@/assets/sprite-agv.png";
 import boxSprite from "@/assets/sprite-box.png";
 import { Card } from "@/components/Shell";
@@ -52,10 +52,9 @@ function Index() {
             <img key={`b${d}`} src={boxSprite} alt="" className="anim-belt-b absolute w-[2.4%] -translate-x-1/2 -translate-y-1/2" style={{ animationDelay: `-${d}s` }} />
           ))}
           <img src={agvSprite} alt="搬运机器人" className="anim-agv absolute w-[4.5%] -translate-x-1/2 -translate-y-1/2 drop-shadow-lg" />
-          <img src={sceneClean} alt="" className="anim-patch-a absolute inset-0 h-full w-full opacity-0" style={{ clipPath: "polygon(67% 33%, 100% 33%, 100% 100%, 67% 100%)" }} />
-          <img src={sceneClean} alt="" className="anim-patch-b absolute inset-0 h-full w-full opacity-0" style={{ clipPath: "polygon(76% 24%, 100% 24%, 100% 90%, 76% 90%)" }} />
-          <img src={haulerA} alt="运输卡车" className="anim-truck-a absolute w-[20.16%]" style={{ left: "69.27%", top: "35.48%" }} />
-          <img src={haulerB} alt="运输卡车" className="anim-truck-b absolute w-[18.54%]" style={{ left: "80.94%", top: "27.02%" }} />
+          <img src={yardClean} alt="" className="absolute inset-0 h-full w-full" style={{ maskImage: "linear-gradient(90deg, transparent 64%, #000 70%)", WebkitMaskImage: "linear-gradient(90deg, transparent 64%, #000 70%)" }} />
+          <MovingTruck src={haulerB} w={356} h={329} x={1300} y={160} anim="anim-truck-b" wheels={[[28,155],[47,165],[70,178],[178,234],[268,283]]} />
+          <MovingTruck src={haulerA} w={387} h={350} x={1660} y={345} anim="anim-truck-a" wheels={[[50,167],[80,185],[195,252],[282,305]]} />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/20 via-25% to-transparent to-50%" />
           {hotspots.map((h) => (
             <Link key={h.label} to={h.to} className="group absolute z-10 flex items-center gap-3" style={{ left: `${h.x}%`, top: `${h.y}%` }}>
@@ -155,6 +154,29 @@ function Index() {
           </Card>
         </div>
       </div>
+    </div>
+  );
+}
+
+function MovingTruck({ src, w, h, x, y, anim, wheels }: { src: string; w: number; h: number; x: number; y: number; anim: string; wheels: [number, number][] }) {
+  const delay = anim === "anim-truck-b" ? "-12s" : "0s";
+  return (
+    <div className={`${anim} absolute`} style={{ left: `${(x / 1920) * 100}%`, top: `${(y / 1088) * 100}%`, width: `${(w / 1920) * 100}%`, aspectRatio: `${w} / ${h}` }}>
+      <div className="truck-body absolute inset-0" style={{ animationDelay: delay }}>
+        <img src={src} alt="运输卡车" className="absolute inset-0 h-full w-full" style={{ filter: "drop-shadow(18px 14px 10px oklch(0.3 0.03 250 / 0.35))" }} />
+      </div>
+      {wheels.map(([cx, cy], i) => (
+        <div key={i} className="absolute" style={{ left: `${(cx / w) * 100}%`, top: `${(cy / h) * 100}%`, width: `${(30 / w) * 100}%`, aspectRatio: "1", transform: "translate(-50%, -50%) skewY(28deg) scaleX(0.72)" }}>
+          <svg viewBox="0 0 40 40" className="truck-wheel h-full w-full" style={{ animationDelay: delay }}>
+            <circle cx="20" cy="20" r="19" fill="oklch(0.22 0.01 250)" />
+            <circle cx="20" cy="20" r="11" fill="oklch(0.78 0.01 250)" />
+            {[0, 60, 120, 180, 240, 300].map((a) => (
+              <rect key={a} x="19" y="9.5" width="2" height="9" rx="1" fill="oklch(0.45 0.01 250)" transform={`rotate(${a} 20 20)`} />
+            ))}
+            <circle cx="20" cy="20" r="3" fill="oklch(0.35 0.01 250)" />
+          </svg>
+        </div>
+      ))}
     </div>
   );
 }
