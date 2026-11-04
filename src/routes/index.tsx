@@ -2,6 +2,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowUpRight, Check, TrendingUp, Package, Truck, AlertTriangle, Gauge } from "lucide-react";
 import { Area, AreaChart, Bar, BarChart, ResponsiveContainer, XAxis } from "recharts";
 import warehouse from "@/assets/warehouse.jpg";
+import truckSprite from "@/assets/sprite-truck.png";
+import agvSprite from "@/assets/sprite-agv.png";
+import boxSprite from "@/assets/sprite-box.png";
 import { Card } from "@/components/Shell";
 import { activities, throughput, todayTrend } from "@/data/mock";
 
@@ -34,23 +37,37 @@ const kpis = [
 function Index() {
   return (
     <div className="relative -mt-16 min-h-[calc(100vh-2rem)] overflow-hidden pt-16">
-      <img src={warehouse} alt="物流中心等轴测场景" width={1920} height={1088} className="absolute inset-0 h-full w-full object-cover opacity-90" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/30 to-transparent" />
-
-      {hotspots.map((h) => (
-        <Link key={h.label} to={h.to} className="group absolute z-10 flex items-center gap-3" style={{ left: `${h.x}%`, top: `${h.y}%` }}>
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-card shadow-lg">
-            <span className={`pulse-dot h-2.5 w-2.5 rounded-full ${h.dot}`} />
-          </span>
-          <span className="glass flex items-center gap-6 px-4 py-2.5 transition-transform group-hover:-translate-y-1">
-            <span>
-              <span className="block font-num text-[9px] tracking-widest text-muted-foreground">{h.tag}</span>
-              <span className="text-sm font-semibold">{h.label}</span>
-            </span>
-            <ArrowUpRight className="h-4 w-4 text-primary" />
-          </span>
-        </Link>
-      ))}
+      <div className="scene-fit absolute inset-0">
+        <div
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+          style={{ width: "max(100cqw, calc(100cqh * 1920 / 1088))", aspectRatio: "1920 / 1088" }}
+        >
+          <img src={warehouse} alt="物流中心等轴测场景" width={1920} height={1088} className="absolute inset-0 h-full w-full opacity-90" />
+          {[0, 1.75, 3.5, 5.25].map((d) => (
+            <img key={`a${d}`} src={boxSprite} alt="" className="anim-belt-a absolute w-[2.4%] -translate-x-1/2 -translate-y-1/2" style={{ animationDelay: `-${d}s` }} />
+          ))}
+          {[0, 2, 4].map((d) => (
+            <img key={`b${d}`} src={boxSprite} alt="" className="anim-belt-b absolute w-[2.4%] -translate-x-1/2 -translate-y-1/2" style={{ animationDelay: `-${d}s` }} />
+          ))}
+          <img src={agvSprite} alt="搬运机器人" className="anim-agv absolute w-[4.5%] -translate-x-1/2 -translate-y-1/2 drop-shadow-lg" />
+          <img src={truckSprite} alt="运输卡车" className="anim-truck absolute w-[21%] -translate-x-1/2 -translate-y-1/2 drop-shadow-xl" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/20 via-25% to-transparent to-50%" />
+          {hotspots.map((h) => (
+            <Link key={h.label} to={h.to} className="group absolute z-10 flex items-center gap-3" style={{ left: `${h.x}%`, top: `${h.y}%` }}>
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-card shadow-lg">
+                <span className={`pulse-dot h-2.5 w-2.5 rounded-full ${h.dot}`} />
+              </span>
+              <span className="glass flex items-center gap-6 px-4 py-2.5 transition-transform group-hover:-translate-y-1">
+                <span>
+                  <span className="block font-num text-[9px] tracking-widest text-muted-foreground">{h.tag}</span>
+                  <span className="text-sm font-semibold">{h.label}</span>
+                </span>
+                <ArrowUpRight className="h-4 w-4 text-primary" />
+              </span>
+            </Link>
+          ))}
+        </div>
+      </div>
 
       <div className="relative z-10 grid grid-cols-[360px_1fr_1fr] grid-rows-[auto_1fr_auto] gap-4 px-8 pb-4">
         <div className="col-span-3">
