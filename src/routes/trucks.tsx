@@ -31,7 +31,7 @@ function TrucksPage() {
       <div className="grid grid-cols-[1fr_330px] gap-6 px-8 pt-2">
         <div className="relative mx-auto w-full max-w-[1300px]">
           <img src={truckImg} alt="运输卡车侧视图" width={1792} height={768} className="w-full" />
-          <div className="absolute grid grid-cols-6 grid-rows-3 gap-1" style={{ left: "28.5%", top: "20%", width: "61.5%", height: "35%" }}>
+          <div className="absolute grid grid-cols-6 grid-rows-3 gap-1" style={{ left: "28.5%", top: "20%", width: "66%", height: "35%" }}>
             {boxes.map((b) => (
               <button
                 key={b.id}
