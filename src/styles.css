@@ -111,7 +111,7 @@
 /* Home scene motion (coords are % of the 1920x1088 scene) */
 @keyframes truck-drive {
   0%, 8% { left: 98%; top: 92%; }
-  45%, 60% { left: 58%; top: 54%; }
+  45%, 60% { left: 74%; top: 73%; }
   100% { left: 98%; top: 92%; }
 }
 @keyframes agv-route {
