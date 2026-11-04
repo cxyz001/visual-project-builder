@@ -10,33 +10,63 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ParcelRouteImport } from './routes/parcel'
+import { Route as RacksRouteImport } from './routes/racks'
+import { Route as TrucksRouteImport } from './routes/trucks'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ParcelRoute = ParcelRouteImport.update({
+  id: '/parcel',
+  path: '/parcel',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RacksRoute = RacksRouteImport.update({
+  id: '/racks',
+  path: '/racks',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrucksRoute = TrucksRouteImport.update({
+  id: '/trucks',
+  path: '/trucks',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/parcel': typeof ParcelRoute
+  '/racks': typeof RacksRoute
+  '/trucks': typeof TrucksRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/parcel': typeof ParcelRoute
+  '/racks': typeof RacksRoute
+  '/trucks': typeof TrucksRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/parcel': typeof ParcelRoute
+  '/racks': typeof RacksRoute
+  '/trucks': typeof TrucksRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/parcel' | '/racks' | '/trucks'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/parcel' | '/racks' | '/trucks'
+  id: '__root__' | '/' | '/parcel' | '/racks' | '/trucks'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ParcelRoute: typeof ParcelRoute
+  RacksRoute: typeof RacksRoute
+  TrucksRoute: typeof TrucksRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +78,35 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/parcel': {
+      id: '/parcel'
+      path: '/parcel'
+      fullPath: '/parcel'
+      preLoaderRoute: typeof ParcelRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/racks': {
+      id: '/racks'
+      path: '/racks'
+      fullPath: '/racks'
+      preLoaderRoute: typeof RacksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/trucks': {
+      id: '/trucks'
+      path: '/trucks'
+      fullPath: '/trucks'
+      preLoaderRoute: typeof TrucksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ParcelRoute: ParcelRoute,
+  RacksRoute: RacksRoute,
+  TrucksRoute: TrucksRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
