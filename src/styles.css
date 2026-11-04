@@ -107,3 +107,37 @@
 @utility pulse-dot {
   animation: ping-soft 1.6s ease-out infinite;
 }
+
+/* Home scene motion (coords are % of the 1920x1088 scene) */
+@keyframes truck-drive {
+  0%, 8% { left: 98%; top: 92%; }
+  45%, 60% { left: 74%; top: 73%; }
+  100% { left: 98%; top: 92%; }
+}
+@keyframes agv-route {
+  0% { left: 29%; top: 53%; }
+  25% { left: 35%; top: 59%; }
+  50% { left: 39.5%; top: 55%; }
+  75% { left: 33.5%; top: 49%; }
+  100% { left: 29%; top: 53%; }
+}
+@keyframes belt-a {
+  0% { left: 66%; top: 47.5%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { left: 46.5%; top: 57.5%; opacity: 0; }
+}
+@keyframes belt-b {
+  0% { left: 59.5%; top: 61.5%; opacity: 0; }
+  8% { opacity: 1; }
+  92% { opacity: 1; }
+  100% { left: 41.5%; top: 70%; opacity: 0; }
+}
+@keyframes bob { 50% { transform: translate(-50%, -52%); } }
+@utility anim-truck { animation: truck-drive 16s ease-in-out infinite; }
+@utility anim-agv { animation: agv-route 14s linear infinite; }
+@utility anim-belt-a { animation: belt-a 7s linear infinite; }
+@utility anim-belt-b { animation: belt-b 6s linear infinite; }
+@utility scene-fit {
+  container-type: size;
+}
