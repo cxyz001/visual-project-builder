@@ -53,7 +53,7 @@ function Index() {
           ))}
           <img src={agvSprite} alt="搬运机器人" className="anim-agv absolute w-[4.5%] -translate-x-1/2 -translate-y-1/2 drop-shadow-lg" />
           <img src={yardClean} alt="" className="absolute inset-0 h-full w-full" style={{ maskImage: "linear-gradient(90deg, transparent 64%, #000 70%)", WebkitMaskImage: "linear-gradient(90deg, transparent 64%, #000 70%)" }} />
-          <MovingTruck src={haulerB} w={356} h={329} x={1429} y={220} anim="anim-truck-b" wheels={[[28,155],[47,165],[70,178],[178,234],[268,283]]} />
+          <MovingTruck src={haulerB} w={356} h={329} x={1300} y={160} anim="anim-truck-b" wheels={[[28,155],[47,165],[70,178],[178,234],[268,283]]} />
           <MovingTruck src={haulerA} w={387} h={350} x={1660} y={345} anim="anim-truck-a" wheels={[[50,167],[80,185],[195,252],[282,305]]} />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/20 via-25% to-transparent to-50%" />
           {hotspots.map((h) => (
