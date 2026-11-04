@@ -19,7 +19,7 @@ export const Route = createFileRoute("/parcel")({
 
 function ParcelPage() {
   const [idx, setIdx] = useState(0);
-  const p = parcels[idx];
+  const p = parcels[idx]!;
   const gross = +(p.weight + 1.4).toFixed(1);
 
   return (

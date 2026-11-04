@@ -20,7 +20,7 @@ export const Route = createFileRoute("/trucks")({
 function TrucksPage() {
   const [idx, setIdx] = useState(0);
   const [sel, setSel] = useState<string | null>(null);
-  const t = trucks[idx];
+  const t = trucks[idx]!;
   const boxes = truckBoxes(t);
   const steps = ["车辆到位", "装载货物", "装载复核", "发车出库"];
   const stepDone = t.load === 100 ? 3 : t.load > 0 ? 1 : 0;

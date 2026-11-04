@@ -20,9 +20,9 @@ function RacksPage() {
   const [idx, setIdx] = useState(0);
   const [hover, setHover] = useState<number | null>(null);
   const [sel, setSel] = useState(0);
-  const r = racks[idx];
+  const r = racks[idx]!;
   const cells = rackCells(r);
-  const s = cells[sel];
+  const s = cells[sel]!;
 
   return (
     <div>
