@@ -52,7 +52,10 @@ function Index() {
             <img key={`b${d}`} src={boxSprite} alt="" className="anim-belt-b absolute w-[2.4%] -translate-x-1/2 -translate-y-1/2" style={{ animationDelay: `-${d}s` }} />
           ))}
           <img src={agvSprite} alt="搬运机器人" className="anim-agv absolute w-[4.5%] -translate-x-1/2 -translate-y-1/2 drop-shadow-lg" />
-          <img src={truckSprite} alt="运输卡车" className="anim-truck absolute w-[21%] -translate-x-1/2 -translate-y-1/2 drop-shadow-xl" />
+          <img src={sceneClean} alt="" className="anim-patch-a absolute inset-0 h-full w-full opacity-0" style={{ clipPath: "polygon(67% 33%, 100% 33%, 100% 100%, 67% 100%)" }} />
+          <img src={sceneClean} alt="" className="anim-patch-b absolute inset-0 h-full w-full opacity-0" style={{ clipPath: "polygon(76% 24%, 100% 24%, 100% 90%, 76% 90%)" }} />
+          <img src={haulerA} alt="运输卡车" className="anim-truck-a absolute w-[20.16%]" style={{ left: "69.27%", top: "35.48%" }} />
+          <img src={haulerB} alt="运输卡车" className="anim-truck-b absolute w-[18.54%]" style={{ left: "80.94%", top: "27.02%" }} />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-background via-background/20 via-25% to-transparent to-50%" />
           {hotspots.map((h) => (
             <Link key={h.label} to={h.to} className="group absolute z-10 flex items-center gap-3" style={{ left: `${h.x}%`, top: `${h.y}%` }}>
