@@ -158,7 +158,7 @@ function Index() {
   );
 }
 
-function MovingTruck({ src, w, h, x, y, anim, wheels }: { src: string; w: number; h: number; x: number; y: number; anim: string; wheels: number[][] }) {
+function MovingTruck({ src, w, h, x, y, anim, wheels }: { src: string; w: number; h: number; x: number; y: number; anim: string; wheels: [number, number][] }) {
   const delay = anim === "anim-truck-b" ? "-12s" : "0s";
   return (
     <div className={`${anim} absolute`} style={{ left: `${(x / 1920) * 100}%`, top: `${(y / 1088) * 100}%`, width: `${(w / 1920) * 100}%`, aspectRatio: `${w} / ${h}` }}>
