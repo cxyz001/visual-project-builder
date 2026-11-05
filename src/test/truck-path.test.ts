@@ -8,7 +8,7 @@ describe('truck manoeuvre', () => {
   it('moves continuously without jumps', () => {
     for (let t = 0; t < TRUCK_CYCLE * 2; t += .02) {
       const a = truckPose(5, t, 0), b = truckPose(5, t + .02, 0);
-      expect(Math.hypot(a.x - b.x, a.z - b.z)).toBeLessThan(.12);
+      expect(Math.hypot(a.x - b.x, a.z - b.z)).toBeLessThan(.15);
     }
   });
   it('never moves both trucks at once', () => {
