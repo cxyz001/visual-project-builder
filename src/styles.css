@@ -169,3 +169,66 @@
 @utility scene-fit {
   container-type: size;
 }
+
+/* Movement stays aligned with the isometric loading lanes. */
+@keyframes dock-shuttle {
+  0%, 12%, 92%, 100% { transform: translate(0, 0); }
+  42%, 58% { transform: translate(9cqw, 6cqw); }
+}
+@keyframes robot-shuttle {
+  0%, 10%, 90%, 100% { transform: translate(0, 0); }
+  40%, 58% { transform: translate(12cqw, -8cqw); }
+}
+.anim-truck-a, .anim-truck-b { animation-name: dock-shuttle; will-change: transform; }
+.anim-agv { left: 40%; top: 58%; animation-name: robot-shuttle; will-change: transform; }
+.anim-belt-a, .anim-belt-b { translate: none; }
+@keyframes belt-a {
+  0% { left: 59%; top: 44%; opacity: 0; }
+  8%, 90% { opacity: 1; }
+  100% { left: 36%; top: 59%; opacity: 0; }
+}
+@keyframes belt-b {
+  0% { left: 63.8%; top: 49%; opacity: 0; }
+  8%, 90% { opacity: 1; }
+  100% { left: 51%; top: 58.5%; opacity: 0; }
+}
+.conveyor-flow path { fill: none; stroke: #77dfff; stroke-width: 5; stroke-dasharray: 9 15; stroke-linecap: round; opacity: .8; animation: conveyor-roll 1.2s linear infinite; }
+@keyframes conveyor-roll { to { stroke-dashoffset: -48; } }
+.scene-paused .scene-fit *, .scene-paused .pulse-dot { animation-play-state: paused !important; }
+.scene-control { position: absolute; right: 2rem; top: 1rem; }
+.scene-control:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+.logistics-webgl { min-height: 740px; }
+.logistics-webgl canvas { display: block; touch-action: none; }
+.world-hotspot { position: absolute; top: 0; left: 0; z-index: 3; display: flex; align-items: center; gap: 12px; will-change: transform; }
+.world-hotspot-dot { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 0 6px #ffffffcf, 0 0 0 10px #ffffff38; }
+.world-hotspot-card { position: relative; min-width: 145px; padding: 12px 34px 12px 15px; border: 1px solid #ffffffdc; border-radius: 15px; background: #f6faffc9; backdrop-filter: blur(15px); box-shadow: 0 8px 28px #48779820; transition: background .2s; }
+.world-hotspot:hover .world-hotspot-card { background: #fff; }
+.world-hotspot:focus-visible { outline: 2px solid #4288e9; outline-offset: 8px; }
+.world-hotspot-card small { display: block; font-size: 8px; letter-spacing: 1.3px; color: #8295a9; }
+.world-hotspot-card strong { display: block; margin-top: 4px; font-size: 12px; color: #2a4057; }
+.world-hotspot-card > span { position: absolute; right: 13px; bottom: 13px; color: #4288e9; }
+@media (max-width: 700px) { .world-hotspot-card { min-width: 95px; padding: 8px 23px 8px 9px; } .world-hotspot-card small { display: none; } .world-hotspot-card strong { font-size: 10px; } }
+.dashboard-layout { pointer-events: none; }
+.dashboard-layout section, .dashboard-layout button, .dashboard-layout a { pointer-events: auto; }
+.scene-instructions { position: absolute; right: 2rem; top: 9rem; z-index: 2; font-size: 11px; color: #526c86; pointer-events: none; }
+@media (max-width: 700px) { .logistics-webgl { height: 650px; min-height: 0; } .scene-instructions { top: 16rem; right: 1rem; } }
+@media (min-width: 1500px) { .dashboard-bottom { margin-top: clamp(6rem, 14vh, 12rem); } }
+@media (max-width: 1100px) {
+  .dashboard-layout { grid-template-columns: 270px 1fr 1fr; padding-inline: 1rem; }
+  .dashboard-bottom { grid-template-columns: 270px 1fr; }
+  .dashboard-bottom > :last-child { grid-column: span 2; }
+  .scene-control { position: static; margin-top: 1rem; }
+}
+@media (max-width: 700px) {
+  .dashboard-layout { display: flex; flex-direction: column; }
+  .dashboard-layout h1 { font-size: 1.5rem; }
+  .dashboard-layout > :nth-child(2) { margin-top: 17rem; }
+  .dashboard-bottom { display: flex; flex-direction: column; margin-top: 0; }
+  .operations-home .scene-fit { bottom: auto; height: 650px; }
+  .operations-home .scene-fit > div { width: 1150px !important; left: 36%; }
+  .operations-home .scene-fit a { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .operations-home *, .operations-home *::before, .operations-home *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
+  .anim-belt-a, .anim-belt-b { opacity: 0; }
+}
