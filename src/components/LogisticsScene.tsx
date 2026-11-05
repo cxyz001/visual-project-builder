@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { BELTS, BELT_TOP, BOX_SIZE, parcelPosition, robotPosition, truckPosition } from './logistics-layout';
+import { BELTS, BELT_TOP, BOX_SIZE, parcelPosition, robotPosition, truckPose } from './logistics-layout';
 
 export default function LogisticsScene({ paused }: { paused: boolean }) {
   const host = useRef<HTMLDivElement>(null);
@@ -168,16 +168,16 @@ export default function LogisticsScene({ paused }: { paused: boolean }) {
         for (const z of [-2.7, -.5, 1]) block(group, [.045, .11, .14], [side * 1.19, 1.02, z], '#ffbe60');
       }
       block(group, [2.3, .16, .15], [0, .99, 3.38], '#bdccd8');
-      const wheels: THREE.Group[] = [];
+      const wheels: THREE.Group[] = []; const steer: THREE.Group[] = [];
       for (const z of [-2.65, -1.65, 2.5]) for (const side of [-1, 1]) {
-        const wheel = new THREE.Group(); wheel.position.set(side * 1.13, .47, z); group.add(wheel);
+        const wheel = new THREE.Group(); wheel.position.set(side * 1.13, .47, z); wheel.rotation.order = 'YXZ'; group.add(wheel); if (z > 0) steer.push(wheel);
         cylinder(wheel, .47, .28, [0, 0, 0], '#233342');
         cylinder(wheel, .25, .3, [0, 0, 0], '#b9cbd9');
         for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 4) cylinder(wheel, .025, .32, [0, Math.sin(angle) * .17, Math.cos(angle) * .17], '#5b7183');
         block(wheel, [.32, .065, .4], [0, 0, 0], '#667e91'); wheels.push(wheel);
       }
       for (const side of [-1, 1]) block(scene, [.04, .01, 18], [x + side * 1.65, .02, 2.5], '#e4b85c');
-      return { group, wheels, x, offset: i * 16, previous: truckPosition(i * 16) };
+      return { group, wheels, steer, x, slot: i, previous: 0 };
     });
     const clock = new THREE.Clock(); let elapsed = 0; let frame = 0;
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -192,11 +192,15 @@ export default function LogisticsScene({ paused }: { paused: boolean }) {
       lift.position.y = .5 + (1 - Math.cos(elapsed * .32)) * 1.7;
       const p = robotPosition(elapsed); robot.position.set(p.x, p.y, p.z); robot.rotation.y = p.heading;
       for (const truck of trucks) {
-        const z = truckPosition(elapsed + truck.offset); truck.group.position.set(truck.x, 0, z);
-        const distance = z - truck.previous; for (const wheel of truck.wheels) wheel.rotation.x += distance / .47; truck.previous = z;
+        const pose = truckPose(truck.x, elapsed, truck.slot);
+        truck.group.position.set(pose.x, 0, pose.z); truck.group.rotation.y = pose.heading;
+        const distance = pose.s - truck.previous; truck.previous = pose.s;
+        truck.group.position.y = Math.abs(distance) > .001 ? Math.sin(elapsed * 22) * .012 : 0;
+        for (const wheel of truck.wheels) wheel.rotation.x += distance / .47;
+        for (const wheel of truck.steer) wheel.rotation.y += ((pose.curve ? .45 : 0) - wheel.rotation.y) * .08;
       }
       controls.update(); renderer.render(scene, camera);
-      const anchors = [new THREE.Vector3(-7, 4.8, -1), new THREE.Vector3(9.5, 3.5, truckPosition(elapsed + 16)), new THREE.Vector3(.4, 2, 2), new THREE.Vector3(p.x, 1.7, p.z)];
+      const anchors = [new THREE.Vector3(-7, 4.8, -1), (() => { const t = trucks[1]!.group.position; return new THREE.Vector3(t.x, 3.5, t.z); })(), new THREE.Vector3(.4, 2, 2), new THREE.Vector3(p.x, 1.7, p.z)];
       anchors.forEach((anchor, i) => {
         const el = markers.current[i]; if (!el) return;
         anchor.project(camera);
